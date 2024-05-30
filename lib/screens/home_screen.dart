@@ -42,14 +42,17 @@ class HomeScreen extends StatelessWidget {
               child: Text('Настройки'),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-             onPressed: () {
-                if (gameController.teams.isNotEmpty) {
-                  gameController.startRound();
-                  Get.to(GameScreen());
-                }
-              },
-              child: Text('Начать игру'),
+            Obx(
+              () => gameController.teams.length >= 2
+                  ? ElevatedButton(
+                      onPressed: () {
+                        gameController.reset();
+                        gameController.startRound();
+                        Get.to(GameScreen());
+                      },
+                      child: Text('Начать игру'),
+                    )
+                  : Text("Минимум 2 команды для начала"),
             ),
             Expanded(
               child: Obx(() => ListView.builder(

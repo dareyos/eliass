@@ -42,10 +42,10 @@ class GameScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10,),
-            ElevatedButton(
-              onPressed: gameController.nextTeam,
-              child: Text('Следующая команда'),
-            ),
+            // ElevatedButton(
+            //   onPressed: gameController.nextTeam,
+            //   child: Text('Следующая команда'),
+            // ),
             Expanded(
               child: ListView.builder(
                 itemCount: gameController.teams.length,

@@ -1,3 +1,4 @@
+import 'package:eliass/screens/finish_screen.dart';
 import 'package:get/get.dart';
 import '../models/team.dart';
 import '../storage/fake_storage.dart';
@@ -17,6 +18,13 @@ class GameController extends GetxController {
   void onInit() {
     super.onInit();
     loadWords();
+    reset();
+  }
+
+  void reset() {
+    currentTeamIndex.value = 0;
+    words.value = <String>[];
+    currentWord.value = '';
   }
 
   void addTeam(String name) {
@@ -46,12 +54,14 @@ class GameController extends GetxController {
       currentWord.value = words.removeLast();
     } else {
       loadWords();
+      words.shuffle();
       currentWord.value = words.removeLast();
     }
   }
 
   void guessCorrect() {
     teams[currentTeamIndex.value].score++;
+    teams[currentTeamIndex.value].guessedWords.add(currentWord.value);
     nextWord();
   }
 
@@ -59,10 +69,15 @@ class GameController extends GetxController {
     nextWord();
   }
 
-  void nextTeam() {
-    currentTeamIndex.value = (currentTeamIndex.value + 1) % teams.length;
-    startRound();
+   void nextTeam() {
+    if (currentTeamIndex.value == teams.length - 1) {
+      Get.to(FinishScreen());
+    } else {
+      currentTeamIndex.value = (currentTeamIndex.value + 1) % teams.length;
+      startRound();
+    }
   }
+
 
   void loadWords() {
     words.addAll(FakeStorage.getWords());
